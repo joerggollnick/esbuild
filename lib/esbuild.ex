@@ -1,6 +1,6 @@
 defmodule Esbuild do
   # https://registry.npmjs.org/esbuild/latest
-  @latest_version "0.14.0"
+  @latest_version "0.14.29"
 
   @moduledoc """
   Esbuild is an installer and runner for [esbuild](https://esbuild.github.io).
@@ -249,8 +249,7 @@ defmodule Esbuild do
           # TODO: remove when we require OTP 24
           "arm" when osname == :darwin -> "darwin-arm64"
           "arm" -> "#{osname}-arm"
-          "armv7" -> "#{osname}-arm"
-          "armv7l" -> "#{osname}-arm"
+          "armv7" <> _ -> "#{osname}-arm"
           _ -> raise "esbuild is not available for architecture: #{arch_str}"
         end
     end
@@ -276,7 +275,7 @@ defmodule Esbuild do
     end
 
     # https://erlef.github.io/security-wg/secure_coding_and_deployment_hardening/inets
-    cacertfile = CAStore.file_path() |> String.to_charlist()
+    cacertfile = cacertfile() |> String.to_charlist()
 
     http_options = [
       ssl: [
@@ -298,5 +297,9 @@ defmodule Esbuild do
       other ->
         raise "couldn't fetch #{url}: #{inspect(other)}"
     end
+  end
+
+  defp cacertfile() do
+    Application.get_env(:esbuild, :cacerts_path) || CAStore.file_path()
   end
 end

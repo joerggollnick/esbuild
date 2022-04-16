@@ -1,3 +1,4 @@
+# Fork will be removed now
 # Esbuild
 
 [![CI](https://github.com/phoenixframework/esbuild/actions/workflows/main.yml/badge.svg)](https://github.com/phoenixframework/esbuild/actions/workflows/main.yml)
